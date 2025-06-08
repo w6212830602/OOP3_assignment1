@@ -9,12 +9,12 @@ public class OctagonalPrism extends Shape {
     }
 
     @Override
-    public double getBaseArea() {
-        return 2 * (1 + Math.sqrt(2)) * Math.pow(edgeLength, 2);
+    public double calcVolume() {
+        return calcBaseArea() * height;
     }
 
     @Override
-    public double getVolume() {
-        return getBaseArea() * height;
+    public double calcBaseArea() {
+        return 2 * (1 + Math.sqrt(2)) * Math.pow(edgeLength, 2);
     }
 }

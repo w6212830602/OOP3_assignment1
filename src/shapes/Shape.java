@@ -11,11 +11,12 @@ public abstract class Shape implements Comparable<Shape> {
         return height;
     }
 
-    public abstract double getBaseArea();
-    public abstract double getVolume();
+    public abstract double calcVolume();
+    public abstract double calcBaseArea();
 
     @Override
     public int compareTo(Shape other) {
-        return Double.compare(this.height, other.height);
+        return Double.compare(this.calcVolume(), other.calcVolume());
     }
+
 }

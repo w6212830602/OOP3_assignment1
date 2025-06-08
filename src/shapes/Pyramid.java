@@ -9,12 +9,12 @@ public class Pyramid extends Shape {
     }
 
     @Override
-    public double getBaseArea() {
-        return Math.pow(edgeLength, 2);
+    public double calcVolume() {
+        return (1.0 / 3.0) * calcBaseArea() * height;
     }
 
     @Override
-    public double getVolume() {
-        return (1.0 / 3.0) * getBaseArea() * height;
+    public double calcBaseArea() {
+        return Math.pow(edgeLength, 2);
     }
 }
