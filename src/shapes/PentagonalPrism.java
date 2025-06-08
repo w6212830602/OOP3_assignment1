@@ -9,12 +9,12 @@ public class PentagonalPrism extends Shape {
     }
 
     @Override
-    public double getBaseArea() {
-        return (5.0 * Math.pow(edgeLength, 2) * Math.tan(Math.toRadians(54))) / 4.0;
+    public double calcVolume() {
+        return calcBaseArea() * height;
     }
 
     @Override
-    public double getVolume() {
-        return getBaseArea() * height;
+    public double calcBaseArea() {
+        return (5.0 * Math.pow(edgeLength, 2) * Math.tan(Math.toRadians(54))) / 4.0;
     }
 }

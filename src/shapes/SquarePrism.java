@@ -9,12 +9,12 @@ public class SquarePrism extends Shape {
     }
 
     @Override
-    public double getBaseArea() {
-        return Math.pow(edgeLength, 2);
+    public double calcVolume() {
+        return calcBaseArea() * height;
     }
 
     @Override
-    public double getVolume() {
-        return getBaseArea() * height;
+    public double calcBaseArea() {
+        return Math.pow(edgeLength, 2);
     }
 }
