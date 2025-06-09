@@ -1,13 +1,93 @@
 package appDomain;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 import shapes.*;
 import utilities.*;
 
-import java.io.File;
-import java.util.*;
+
 
 public class AppDriver
 {
+
+	public static Shape[] parseShapes(String filePath) throws IOException {
+		List<Shape> shapes = new ArrayList<>();
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
+
+			String firstLine = reader.readLine(); // get the array size
+			if (firstLine == null) {
+				throw new IOException("File appears empty. Check file.");
+			}
+
+			int arraySize;
+			try {
+				arraySize = Integer.parseInt(firstLine.trim());
+			} catch (NumberFormatException e) {
+				throw new IOException("First line is not a valid number. Check file.");
+			}
+
+			String line;
+			int count = 0;
+			while ((line = reader.readLine()) != null && count < arraySize) {
+				String[] parts = line.split(" ");
+				if(parts.length < 3){
+					System.err.println("Data incomplete. Skipping line at line " + line);
+					continue;
+				}
+
+				String shapeType = parts[0].trim();
+				double val1;
+				double val2;
+				
+				try {
+					val1 = Double.parseDouble(parts[1].trim()); // should always be height
+					val2 = Double.parseDouble(parts[2].trim()); // should always be edge length, could be radius
+				} catch (NumberFormatException e) {
+					System.err.println("Invalid numeric value detected. Skipping line at " + line);
+					continue;
+				}
+
+				switch (shapeType.toLowerCase()) {
+					case "cone":
+						shapes.add(new Cone(val1, val2));
+						break;
+					
+					case "cylinder":
+						shapes.add(new Cylinder(val1, val2));
+						break;
+					
+					case "octagonalprism":
+						shapes.add(new OctagonalPrism(val1, val2));
+						break;
+
+					case "pentagonalprism": 
+						shapes.add(new OctagonalPrism(val1, val2));
+						break;
+					
+					case "pyramid":
+						shapes.add(new Pyramid(val1, val2));
+						break;
+					
+					case "squareprism": 
+						shapes.add(new SquarePrism(val1, val2));
+						break;
+
+					case "triangularprism": 
+						shapes.add(new TriangularPrism(val1, val2));
+						break;
+
+					default:
+						System.err.println("Shape not found: " + shapeType + " at line " + line);
+						break;
+				}
+				count++;
+			}
+		}
+		return shapes.toArray(new Shape[0]);
+	}
 
 	public static void main( String[] args )
 	{
@@ -21,6 +101,17 @@ public class AppDriver
 		String fileName = null;
 		String sortType = null;
 		String compareType = null;
+		Shape[] shapes = null;
+
+		try {
+			shapes = parseShapes(fileName);
+			/* Use the following for testing the parse method
+			 * for (Shape shape : shapes){
+			 * System.out.println(shape);}
+			 */
+		} catch (IOException e) {
+			System.err.println("Error reading file: " + e.getMessage());
+		}
 
 		for (String arg: args) {
 			if (arg.toLowerCase().startsWith("-f")) {
