@@ -10,12 +10,12 @@ import utilities.*;
 
 public class AppDriver
 {
-
+	// Reads the shape data from file and returns an array of Shape object
 	public static Shape[] parseShapes(String filePath) throws IOException {
 		List<Shape> shapes = new ArrayList<>();
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
-
+			// Reads the first line to get expected number of shapes
 			String firstLine = reader.readLine(); // get the array size
 			if (firstLine == null) {
 				throw new IOException("File appears empty. Check file.");
@@ -30,6 +30,8 @@ public class AppDriver
 
 			String line;
 			int count = 0;
+
+			// Read each shape line until the count reaches array size
 			while ((line = reader.readLine()) != null && count < arraySize) {
 				String[] parts = line.split(" ");
 				if(parts.length < 3){
@@ -49,6 +51,7 @@ public class AppDriver
 					continue;
 				}
 
+				// Creates the corresponding shape object based on type
 				switch (shapeType.toLowerCase()) {
 					case "cone":
 						shapes.add(new Cone(val1, val2));
@@ -85,7 +88,7 @@ public class AppDriver
 				count++;
 			}
 		}
-		return shapes.toArray(new Shape[0]);
+		return shapes.toArray(new Shape[0]); // converts list to array
 	}
 
 	public static void main( String[] args )
@@ -95,6 +98,7 @@ public class AppDriver
 		String compareType = null;
 		Shape[] shapes = null;
 
+		// Process command-line arguments
 		for (String arg: args) {
 			if (arg.toLowerCase().startsWith("-f")) {
 				fileName = arg.substring(2);
@@ -106,17 +110,19 @@ public class AppDriver
 		}
 
 		// Validating the command line arguments
+		// Validates that a file was provided
 		if (fileName == null) {
     		System.out.println("No -f<filename> flag.	Please specify a filename.");
     		return;
 		}
 
+		// To get full path
 		fileName = fileName.replace("\\", "/").replace("\"", "");
-
 		File file = fileName.contains(":") || fileName.startsWith("res/")
     		? new File(fileName)
     		: new File("res/" + fileName);
 
+		// Parse shapes from file
 		try 
 		{
     		shapes = parseShapes(file.getPath());
@@ -125,11 +131,13 @@ public class AppDriver
     	return; 
 		}
 
+		// Validate shapes
 		if (shapes == null || shapes.length == 0) {
     		System.err.println("No shapes loaded from the file.");
     		return;
 		}
 
+		// Validate comparison type
 		if (compareType == null) {
     		System.out.println("No -t<h|v|a> flag. Please specify the comparison type:  h (height), v (volume), or a (base area).");
     		return;
@@ -139,6 +147,7 @@ public class AppDriver
     		return;
 		}
 
+		// Validate sorting algorithm
 		if (sortType == null) {
     		System.out.println("No -s<b|i|s|m|q|h> flag. Please specify the sorting type: b (bubble), i (insertion), s (selection), m (merge), q (quick), h (heap).");
     		return;
@@ -172,7 +181,7 @@ public class AppDriver
         	return;
 		}
 
-        // Sorting and time it took to sort
+        // Sort using the selected algorithm and time the sort
         long start = System.nanoTime();
         switch (sortType) {
             case "b": 
@@ -205,6 +214,7 @@ public class AppDriver
         }
         long end = System.nanoTime();
 
+		// Print elements: first, every 1000th, and last
 		for (int i = 0; i < shapes.length; i++) {
     		boolean isFirst = i == 0;
     		boolean isLast = i == shapes.length - 1;
@@ -225,11 +235,13 @@ public class AppDriver
             		default: value = 0;
         	}
 
+			// Display formatted result
         	System.out.printf("%-20s %30s   %s: %.15f%n",
             	label, shapes[i].getClass().getName(), metricLabel, value);
     		}	
 		}
 
+		// Print sort execution time
 		System.out.printf("%s Sort run time was: %.2f milliseconds%n", sortLabel, (end - start) / 1_000_000.0);
 	}
 }
