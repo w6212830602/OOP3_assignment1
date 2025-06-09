@@ -1,13 +1,12 @@
 package appDomain;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import shapes.*;
 import utilities.*;
-
-
 
 public class AppDriver
 {
@@ -64,7 +63,7 @@ public class AppDriver
 						break;
 
 					case "pentagonalprism": 
-						shapes.add(new OctagonalPrism(val1, val2));
+						shapes.add(new PentagonalPrism(val1, val2));
 						break;
 					
 					case "pyramid":
@@ -91,27 +90,10 @@ public class AppDriver
 
 	public static void main( String[] args )
 	{
-		// TODO Auto-generated method stub
-
-		// refer to demo001 BasicFileIO.java for a simple example on how to
-		// read data from a text file
-
-		// refer to demo01 Test.java for an example on how to parse command
-		// line arguments and benchmarking tests
 		String fileName = null;
 		String sortType = null;
 		String compareType = null;
 		Shape[] shapes = null;
-
-		try {
-			shapes = parseShapes(fileName);
-			/* Use the following for testing the parse method
-			 * for (Shape shape : shapes){
-			 * System.out.println(shape);}
-			 */
-		} catch (IOException e) {
-			System.err.println("Error reading file: " + e.getMessage());
-		}
 
 		for (String arg: args) {
 			if (arg.toLowerCase().startsWith("-f")) {
@@ -126,6 +108,25 @@ public class AppDriver
 		// Validating the command line arguments
 		if (fileName == null) {
     		System.out.println("No -f<filename> flag.	Please specify a filename.");
+    		return;
+		}
+
+		fileName = fileName.replace("\\", "/").replace("\"", "");
+
+		File file = fileName.contains(":") || fileName.startsWith("res/")
+    		? new File(fileName)
+    		: new File("res/" + fileName);
+
+		try 
+		{
+    		shapes = parseShapes(file.getPath());
+		} catch (IOException e) {
+    	System.err.println("Error reading file: " + e.getMessage());
+    	return; 
+		}
+
+		if (shapes == null || shapes.length == 0) {
+    		System.err.println("No shapes loaded from the file.");
     		return;
 		}
 
@@ -146,14 +147,6 @@ public class AppDriver
     		System.out.println("Use -s followed by: b (bubble), i (insertion), s (selection), m (merge), q (quick), h (heap).");
     		return;
 		}
-
-		// refer to demo02 Student.java for comparable implementation, and
-		// NameCompare.java or GradeCompare for comparator implementations
-
-		// refer to demo02 KittySort.java on how to use a custom sorting
-		// algorithm on a list of comparables to sort using either the
-		// natural order (comparable) or other orders (comparators)
-
 	
 		// Sorting the shapes based on the file and display the results
         // To select the comparator based on compareType
