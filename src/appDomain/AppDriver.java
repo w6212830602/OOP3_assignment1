@@ -12,7 +12,8 @@ public class AppDriver
 {
 	// Reads the shape data from file and returns an array of Shape object
 	public static Shape[] parseShapes(String filePath) throws IOException {
-		List<Shape> shapes = new ArrayList<>();
+		
+		Shape[] shapes;
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
 			// Reads the first line to get expected number of shapes
@@ -27,7 +28,7 @@ public class AppDriver
 			} catch (NumberFormatException e) {
 				throw new IOException("First line is not a valid number. Check file.");
 			}
-
+			shapes = new Shape[arraySize];
 			String line;
 			int count = 0;
 
@@ -50,45 +51,49 @@ public class AppDriver
 					System.err.println("Invalid numeric value detected. Skipping line at " + line);
 					continue;
 				}
-
-				// Creates the corresponding shape object based on type
+				Shape newShape = null;
 				switch (shapeType.toLowerCase()) {
 					case "cone":
-						shapes.add(new Cone(val1, val2));
+						newShape = new Cone(val1, val2);
 						break;
 					
 					case "cylinder":
-						shapes.add(new Cylinder(val1, val2));
+						newShape = new Cylinder(val1, val2);
 						break;
 					
 					case "octagonalprism":
-						shapes.add(new OctagonalPrism(val1, val2));
+						newShape = new OctagonalPrism(val1, val2);
 						break;
 
 					case "pentagonalprism": 
-						shapes.add(new PentagonalPrism(val1, val2));
+
+						newShape = new OctagonalPrism(val1, val2);
 						break;
 					
 					case "pyramid":
-						shapes.add(new Pyramid(val1, val2));
+						newShape = new Pyramid(val1, val2);
 						break;
 					
 					case "squareprism": 
-						shapes.add(new SquarePrism(val1, val2));
+						newShape = new SquarePrism(val1, val2);
 						break;
 
 					case "triangularprism": 
-						shapes.add(new TriangularPrism(val1, val2));
+						newShape = new TriangularPrism(val1, val2);
 						break;
 
 					default:
 						System.err.println("Shape not found: " + shapeType + " at line " + line);
 						break;
 				}
-				count++;
+				if (newShape != null){
+					shapes[count] = newShape;
+					count++;
+				}
+				
 			}
 		}
-		return shapes.toArray(new Shape[0]); // converts list to array
+		return shapes;
 	}
 
 	public static void main( String[] args )
