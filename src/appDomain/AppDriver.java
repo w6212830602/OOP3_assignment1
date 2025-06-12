@@ -66,8 +66,7 @@ public class AppDriver
 						break;
 
 					case "pentagonalprism": 
-
-						newShape = new OctagonalPrism(val1, val2);
+						newShape = new PentagonalPrism(val1, val2);
 						break;
 					
 					case "pyramid":
@@ -185,7 +184,7 @@ public class AppDriver
         	System.out.println("Invalid compare type.");
         	return;
 		}
-
+		
         // Sort using the selected algorithm and time the sort
         long start = System.nanoTime();
         switch (sortType) {

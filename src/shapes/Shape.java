@@ -16,7 +16,7 @@ public abstract class Shape implements Comparable<Shape> {
 
     @Override
     public int compareTo(Shape other) {
-        return Double.compare(this.calcVolume(), other.calcVolume());
+        return Double.compare(other.calcVolume(),this.calcVolume());
     }
 
 }

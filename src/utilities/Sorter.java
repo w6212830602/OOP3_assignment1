@@ -19,7 +19,7 @@ public class Sorter {
     public static void bubbleSort(Shape[] array, Comparator<Shape> comparator) {
         for (int i = 0; i < array.length - 1; i++) {
             for (int j = 0; j < array.length - 1 - i; j++) {
-                if (comparator.compare(array[j], array[j + 1]) < 0) {
+                if (comparator.compare(array[j], array[j + 1]) > 0) {
                     // Swap elements
                     swap(array, j, j + 1);
                 }
@@ -39,7 +39,7 @@ public class Sorter {
 
             // Move elements of array[0..i-1], that are greater than key,
             // to one position ahead of their current position
-            while (j >= 0 && array[j].compareTo(key) < 0) {
+            while (j >= 0 && array[j].compareTo(key) > 0) {
                 array[j + 1] = array[j];
                 j--;
             }
@@ -55,7 +55,7 @@ public class Sorter {
 
             // Move elements of array[0..i-1], that are greater than key,
             // to one position ahead of their current position
-            while (j >= 0 && comparator.compare(array[j], key) < 0) {
+            while (j >= 0 && comparator.compare(array[j], key) > 0) {
                 array[j + 1] = array[j];
                 j--;
             }
@@ -72,7 +72,7 @@ public class Sorter {
         for (int i = 0; i < array.length - 1; i++) {
             int maxIndex = i;
             for (int j = i + 1; j < array.length; j++) {
-                if (array[j].compareTo(array[maxIndex]) > 0) {
+                if (array[j].compareTo(array[maxIndex]) < 0) {
                     maxIndex = j;
                 }
             }
@@ -86,7 +86,7 @@ public class Sorter {
         for (int i = 0; i < array.length - 1; i++) {
             int maxIndex = i;
             for (int j = i + 1; j < array.length; j++) {
-                if (comparator.compare(array[j], array[maxIndex]) > 0) {
+                if (comparator.compare(array[j], array[maxIndex]) < 0) {
                     maxIndex = j;
                 }
             }
@@ -155,7 +155,7 @@ public class Sorter {
 
         // Merge the two arrays in descending order
         while (i < left.length && j < right.length) {
-            if (left[i].compareTo(right[j]) >= 0) {
+            if (left[i].compareTo(right[j]) < 0) {
                 array[k++] = left[i++];
             } else {
                 array[k++] = right[j++];
@@ -179,7 +179,7 @@ public class Sorter {
 
         // Merge the two arrays in descending order using the comparator
         while (i < left.length && j < right.length) {
-            if (comparator.compare(left[i], right[j]) >= 0) {
+            if (comparator.compare(left[i], right[j]) < 0) {
                 array[k++] = left[i++];
             } else {
                 array[k++] = right[j++];
@@ -235,7 +235,7 @@ public class Sorter {
         int i = low - 1; // Index of smaller element
 
         for (int j = low; j < high; j++) {
-            if (array[j].compareTo(pivot) > 0) { // Change to > for descending order
+            if (array[j].compareTo(pivot) < 0) { // Change to > for descending order
                 i++;
                 swap(array, i, j);
             }
@@ -250,7 +250,7 @@ public class Sorter {
         int i = low - 1; // Index of smaller element
 
         for (int j = low; j < high; j++) {
-            if (comparator.compare(array[j], pivot) > 0) { // Change to > for descending order
+            if (comparator.compare(array[j], pivot) < 0) { // Change to > for descending order
                 i++;
                 swap(array, i, j);
             }
